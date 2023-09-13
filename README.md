@@ -1,7 +1,7 @@
-                 Used Technologies
+Used Technologies:
 # N Layer Architecture
 # Autofac
 # Fluent Validation
-# Aspect Programing
+# Aspect Programming
 # IoC
 
