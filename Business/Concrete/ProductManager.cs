@@ -2,6 +2,7 @@
 using Business.BusinessAspects.Autofac;
 using Business.Constants;
 using Business.ValidationRules.FluentValidation;
+using Core.Aspects.Autofac.Caching;
 using Core.Aspects.Autofac.Validation;
 using Core.CrossCuttingConcerns.Validation;
 using Core.Utilities.Business;
@@ -28,12 +29,14 @@ namespace Business.Concrete
             _productDal = productDal;
             _categoryService = categoryService;
         }
-       
+
+        //[CacheAspect]
         public IDataResult<Product> Get(int id)
         {
             return new SuccessDataResult<Product>(_productDal.Get(p => p.ProductId == id), "Ürün getirildi");
         }
 
+        //[CacheAspect]
         public IDataResult<List<Product>> GetAll()
         {
             if (DateTime.Now.Hour == 7)
@@ -50,6 +53,7 @@ namespace Business.Concrete
 
         [SecuredOperation("product.add,admin")]
         [ValidationAspect(typeof(ProductValidator))]
+        //[CacheRemoveAspect("IProductService.Get")]
         public IResult Add(Product product)
         {
             IResult result = BusinessRules.Run(CheckIfProductCountOfCategoryCorrect(product.CategoryId), CheckProductNameExists(product.ProductName),CheckIfCategoryLimitExceded());
@@ -63,6 +67,7 @@ namespace Business.Concrete
 
 
         }
+
         private IResult CheckIfProductCountOfCategoryCorrect(int categoryId)
         {
             var result = _productDal.GetAll(p => p.CategoryId == categoryId).Count();
@@ -92,5 +97,7 @@ namespace Business.Concrete
             }
             return new SuccessResult();
         }
+
+       
     }
 }
