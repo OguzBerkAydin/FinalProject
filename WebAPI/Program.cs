@@ -38,6 +38,8 @@ namespace WebAPI
 
             //AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
+            builder.Services.AddCors();
+
             var tokenOptions = builder.Configuration.GetSection("TokenOptions").Get<TokenOptions>();
 
             builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -69,7 +71,8 @@ namespace WebAPI
                 app.UseSwaggerUI();
                 
             }
-
+            app.ConfigureCustomExceptionMiddleware();
+            app.UseCors(b=>b.WithOrigins("http://localhost:4200").AllowAnyHeader());
             app.UseHttpsRedirection();
 
             app.UseAuthentication();

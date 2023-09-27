@@ -51,7 +51,7 @@ namespace Business.Concrete
             return new SuccessDataResult<List<ProductDetailDto>>(_productDal.GetProductDetails());
         }
 
-        [SecuredOperation("product.add,admin")]
+        //[SecuredOperation("product.add,admin")]
         [ValidationAspect(typeof(ProductValidator))]
         //[CacheRemoveAspect("IProductService.Get")]
         public IResult Add(Product product)
@@ -67,6 +67,12 @@ namespace Business.Concrete
 
 
         }
+        public IDataResult<List<Product>> GetAllByCategoryId(int id)
+        {
+            return new SuccessDataResult<List<Product>>(_productDal.GetAll(p => p.CategoryId == id));
+        }
+
+        //***************************************************************************************************************************
 
         private IResult CheckIfProductCountOfCategoryCorrect(int categoryId)
         {
