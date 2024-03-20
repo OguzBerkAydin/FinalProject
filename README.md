@@ -1,4 +1,4 @@
-# Used Technologies:
+## Used Technologies:
 - N Layer Architecture
 - Autofac
 - Fluent Validation
